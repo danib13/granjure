@@ -10,12 +10,14 @@ public class EnemyController : MonoBehaviour
     public Transform bulletSpawnPoint;
     public GameObject bulletPrefab;
     public GameObject weaponPrefab;
+    public GameObject healthBarPrefab;
     public float shootInterval = 1f;
     public float bulletSpeed = 5f;
 
     //private
     private PlayerManager playerManager;
     private Health health; // if defeatable enemy w health bar
+    private GameObject healthBarInstance; // health bar for a particular enemy.. (update & destroy bar thru instance)
     private Coroutine weapon_coroutine;
     private bool isRunning_weaponThrow = false;
 
@@ -24,6 +26,11 @@ public class EnemyController : MonoBehaviour
     {
         health = new Health(30);
         //health = GetComponent<HealthBar>();
+        healthBarInstance = Instantiate(healthBarPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+        //healthBarInstance.transform.SetParent(GameObject.Find("HealthBarUI").transform, false);// find canvas "healthbarui"
+
+        healthBarInstance.GetComponent<HealthBar>().UpdateHealthBar(health.currentHealth, health.maxHealth);
+
         if (health == null)
         {
             Debug.LogError("Health component NOT found!");
@@ -44,6 +51,10 @@ public class EnemyController : MonoBehaviour
             isRunning_weaponThrow = true;
             ShootWeapon(weaponPrefab, bulletSpawnPoint, playerManager.transform.position);
             Invoke("ResetWeaponFlag", 0.5f);// reset after delay
+        }
+        if (healthBarInstance && health.currentHealth < 1)
+        {
+            Destroy(healthBarInstance);
         }
     }
 
@@ -89,6 +100,18 @@ public class EnemyController : MonoBehaviour
             Debug.Log($"Hit ENEMY with {other.gameObject.name}");
             Destroy(other.gameObject);
             health.TakeDamage(4, gameObject);
+            if (healthBarInstance)
+            {
+                healthBarInstance.GetComponent<HealthBar>().UpdateHealthBar(health.currentHealth, health.maxHealth);
+            }
+            if (health.currentHealth < 1 )
+            {
+                if (healthBarInstance)
+                {
+                    Destroy(healthBarInstance);
+                }
+                Destroy(gameObject);
+            }
         }
     }
 

@@ -11,10 +11,15 @@ public class Health : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxHealth;
+        
     }
 
     /* CONSTUCTOR */
+    public Health()
+    {
+        this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
+    }
     public Health(int maxHealth)
     {
         this.maxHealth = maxHealth;
@@ -25,7 +30,7 @@ public class Health : MonoBehaviour
     public void TakeDamage(int dmg, GameObject obj)
     {
         currentHealth -= dmg;
-        Debug.Log($"CURRENT HEALTH {currentHealth}/10");
+        Debug.Log($"CURRENT HEALTH {currentHealth}/{maxHealth}");
 
         // the hit may be more pts than health left, so health might be -, so <=0
         if (currentHealth <= 0)
@@ -38,5 +43,14 @@ public class Health : MonoBehaviour
     {
         Debug.Log(obj.name + "Defeated!");
         Destroy(obj);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public int GetMaxHealth()
+    {
+        return maxHealth;
     }
 }
