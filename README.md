@@ -60,9 +60,9 @@ Connects to Pocket script, when the player collides with the NPC that likes Good
 ### StartState
 This script handles the opening Start Scene. While in this scene, to start the game user hits return. When Enter/Return is pressed, FarmScene and OpeningScene are loaded asyncronously. The later is loaded additively since the opening menu will be a pop up scene above the FarmScene.
 ## How to Run Game
-1. Download project folder.
-2. Open project in Unity (Version 2018.4.28f1 was used to build this game.)
-3. Click Play button.
+1. Download executable.
+2. Open application, wait for loading screen
+3. Click Enter button to start game.
 ## Assumptions
 ### Growing Carrots
 Each crop must be watered once per collision. Continuous watering without moving will not register since it needs to be triggered by a collision. Best practice is to water any number distinct sprouts, each to state 1, then each to state 2, etc.
