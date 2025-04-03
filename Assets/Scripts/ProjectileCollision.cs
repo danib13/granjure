@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class ProjectileCollision : MonoBehaviour
@@ -19,7 +20,11 @@ public class ProjectileCollision : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         Debug.Log($"Projectile {projectileName} COLLIDED with {other.gameObject.name}");
-        if (gameObject.CompareTag("Bullet"))
+        if (projectileName == "AxeWeapon" && other.gameObject.name == "Player")
+        {
+            return;
+        }
+        else if (gameObject.CompareTag("Bullet"))
         {
             Destroy(gameObject);
             // regardless of what it hits, it should be destroyed upon a collision
